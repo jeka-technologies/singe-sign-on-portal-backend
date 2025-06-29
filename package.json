@@ -4,7 +4,9 @@
   "description": "This is the official portal backend for the single sign on (SSO) projet for Jeka technologies",
   "scripts": {
     "dev": "nodemon ./src/index.ts",
-    "generate": "prisma generate"
+    "generate": "prisma generate",
+    "start": "ts-node src/index.ts",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
