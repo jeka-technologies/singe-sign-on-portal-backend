@@ -3,6 +3,15 @@ import { redis } from "../config";
 import { AuthService } from "../services";
 import { AuthUtils } from "../utils";
 
+// ---- Domain helpers ----------------------------------------------------
+const INTERNAL_DOMAIN_RAW = process.env.INTERNAL_DOMAIN ?? "http://localhost";
+// Ensure we always have a valid absolute URL (URL() requires a protocol)
+const INTERNAL_HOST = new URL(
+  INTERNAL_DOMAIN_RAW.startsWith("http")
+    ? INTERNAL_DOMAIN_RAW
+    : `https://${INTERNAL_DOMAIN_RAW}`
+).hostname.toLowerCase();
+
 export class AuthController {
   constructor(private readonly service = new AuthService()) {}
 
@@ -43,25 +52,22 @@ export class AuthController {
 
     /* ----------  Decide on same-site vs cross-site -------- */
     let isSameDomain = false;
-    try {
-      if (origin) {
-        const requestHost = new URL(origin).hostname;
-        const internalHost = new URL(process.env.INTERNAL_DOMAIN as string)
-          .hostname;
+    if (origin) {
+      try {
+        const requestHost = new URL(origin).hostname.toLowerCase();
+        // same host or any sub‑domain of the internal host
         isSameDomain =
-          requestHost === internalHost ||
-          requestHost.endsWith(`.${internalHost}`);
-      } 
-    } catch (err) { 
-      console.error("Error parsing origin header:", origin, err);
-      res
-        .status(400)
-        .json({
+          requestHost === INTERNAL_HOST ||
+          requestHost.endsWith(`.${INTERNAL_HOST}`);
+      } catch (err) {
+        console.error("Error parsing origin header:", origin, err);
+        res.status(400).json({
           status: "FAILED",
           message: "Invalid origin header",
           error: err instanceof Error ? err.message : String(err),
         });
-      return;
+        return;
+      }
     }
 
     if (isSameDomain) {
