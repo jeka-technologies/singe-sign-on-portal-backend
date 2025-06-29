@@ -7,7 +7,7 @@
     "generate": "prisma generate",
     "migrate:deploy": "prisma migrate deploy", 
     "build": "tsc",
-    "start": "npm run migrate:deploy && node dist/index.js"
+    "start": "npx prisma migrate deploy && node dist/index.js"
   }, 
   "keywords": [],
   "author": "",
