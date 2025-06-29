@@ -136,3 +136,9 @@ dist
 .pnp.*
 
 /generated/prisma
+
+# Prisma generated client (if not manually versioned)
+prisma/generated/
+
+# Optional if you're generating prisma client to a custom location
+src/generated/prisma/
