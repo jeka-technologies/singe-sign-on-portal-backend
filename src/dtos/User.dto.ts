@@ -4,12 +4,12 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   @Length(2, 50)
-  firstName!: string;
+  first_name!: string;
 
   @IsString()
   @IsNotEmpty()
   @Length(2, 50)
-  lastName!: string;
+  last_name!: string;
 
   @IsEmail()
   email!: string;
@@ -19,12 +19,12 @@ export class CreateUserDto {
   password!: string;
 
   @IsString()
-  phoneNumber!: string;
+  phone_number!: string;
 
   @IsString()
   @IsOptional()
   salt?: string;
 
   @IsString()
-  profileImage!: string;
+  profile_image!: string;
 }
