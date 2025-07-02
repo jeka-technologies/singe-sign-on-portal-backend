@@ -1,19 +1,25 @@
+import cookieParser from "cookie-parser"
 import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
 import { handleInvalidJson } from './middlewares'
 import { AuthRoutes, UserRoutes } from './routes'
+import { setupSwagger } from './swagger'
+
 
 dotenv.config()
 
 const allowedOrigins = [
-    'http://localhost:5173', // your frontend (dev)
-    'https://your-frontend.com', // your prod frontend
-    'http://localhost:8000' // your internal SSO
+    'http://localhost:5173', 
+    'https://your-frontend.com', 
+    'http://localhost:8000',
+    process.env.ALLOWED_ORIGIN
 ]
 
 const app = express()
 app.use(express.json())
+app.use(cookieParser());
+setupSwagger(app);
 app.use(
     cors({
         origin: (origin, callback) => {
@@ -22,7 +28,7 @@ app.use(
             }
             callback(new Error('Not allowed by CORS'))
         },
-        credentials: true // 🔥 This is important for sending cookies!
+        credentials: true 
     })
 )
 
