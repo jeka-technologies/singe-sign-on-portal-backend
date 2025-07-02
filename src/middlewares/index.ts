@@ -1,2 +1,2 @@
-export * from "./handleInvalidJson";
-export * from "./validate";
+export * from './handleInvalidJson'
+export * from './validate'
