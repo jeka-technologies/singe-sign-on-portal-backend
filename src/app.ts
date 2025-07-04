@@ -12,8 +12,7 @@ dotenv.config()
 const allowedOrigins = [
     'http://localhost:5173', 
     'https://your-frontend.com', 
-    'http://localhost:8000',
-    process.env.ALLOWED_ORIGIN
+    'http://localhost:8000'
 ]
 
 const app = express()
@@ -23,7 +22,7 @@ setupSwagger(app);
 app.use(
     cors({
         origin: (origin, callback) => {
-            if (!origin || allowedOrigins.includes(origin)) {
+            if (!origin || "*") {
                 return callback(null, true)
             }
             callback(new Error('Not allowed by CORS'))
